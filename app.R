@@ -21,7 +21,7 @@ getOsmData <- function(circle_sf) {
   q <- opq(bbox = st_bbox(circle_sf)) %>%
     add_osm_feature("amenity", "cinema")
   
-  data <- osmdata_sf(q)
+  data <- osmdata_sf(q) 
   return(data) 
 }
 
@@ -70,25 +70,40 @@ server <- function(input, output, session) {
     print(input$geolocation)
     print(nrow(dataOSM()$osm_polygons))
     
+    
+    userLoc <- data_sf()$point_sf
+    polygons <- dataOSM()$osm_polygons %>% 
+      mutate(
+        name = iconv(name, from="UTF-8", to="UTF-8"),
+        popUp = sprintf(
+          "<p class=popup-text>%s</p>
+          <p class=popup-text>Type: %s</p>", 
+          name, amenity
+        )
+      )
+    
     # MAPBOX
     mapdeck_update(map_id = 'map', session = session) %>%
       # add_sf(
       #   data = data_sf()$circle_sf,
-      #   fill_opacity = 0.3,
+      #   fill_opacity = 0,
       #   stroke_opacity = 1,
-      #   focus_layer = F, 
+      #   stroke_width = 3,
+      #   focus_layer = F,
       #   update_view = F
       # ) %>%
       add_sf(
-        data = data_sf()$point_sf, 
+        data =userLoc , 
         radius_min_pixels = 6,
         update_view = F
       ) %>%
       add_sf(
-        data = dataOSM()$osm_polygons, 
+        data = polygons, 
         fill_opacity = 1,
-        fill_colour = "#202020", 
-        update_view = F
+        fill_colour = "#202020",
+        # fill_colour = "color",
+        update_view = F,
+        tooltip = "popUp"
       )   
     
   })
