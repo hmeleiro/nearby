@@ -1,0 +1,42 @@
+"ee6055","60d394","aaf683","ffd97d","ff9b85"
+body {
+  text-align: center;
+  font-size: 30;
+}
+
+#deckgl-overlay {
+  margin:20px;
+}
+.container-fluid {
+  background-color: #ECEEED;
+}
+
+#SearchBtn {
+  margin-bottom: 20px;
+  background-color: #ee6055;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+     width: 50%; /* Can be in percentage also. */
+
+}
+.shiny-input-panel {
+  margin-bottom: 20px;
+   width: 400px; /* Can be in percentage also. */
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.selectize-input{
+    margin: auto;
+  width: 100%;
+  border: 3px;
+  padding: 10px;
+  background-color: #ff9b85;
+  color: white;
+}
