@@ -138,8 +138,12 @@ server <- function(input, output, session) {
   
   dataOSM <- reactive({
     req(input$SearchBtn)
-
-      getOsmData(data_sf()$circle_sf, input$feature)
+    message(input$long, input$lat, input$dist*1000,  input$feature)
+  
+    
+    
+    getOsmData2(lon = input$long,lat =  input$lat, dist = input$dist*1000,feature_tags = input$feature)
+    # getOsmData(data_sf()$circle_sf, input$feature)
   })
   
   output$map <- renderMapdeck({
@@ -165,7 +169,7 @@ server <- function(input, output, session) {
   observeEvent({input$SearchBtn}, {
     req(input$geolocation & !is.null(dataOSM()))
     req(!is.null(dataOSM()$osm_polygons) & nrow(dataOSM()$osm_polygons) >0)
-
+    
     userLoc <- data_sf()$circle_sf
     
     polygons <- dataOSM()$osm_polygons %>% 
@@ -181,11 +185,11 @@ server <- function(input, output, session) {
     # MAPBOX
     mapdeck_update(map_id = 'map', session = session) %>%
       add_sf(layer_id = "osmdata",
-        data = polygons, 
-        fill_opacity = 1,
-        fill_colour = "#ee6055",
-        update_view = T,
-        tooltip = "popUp"
+             data = polygons, 
+             fill_opacity = 1,
+             fill_colour = "#ee6055",
+             update_view = T,
+             tooltip = "popUp"
       )   
     
   })
